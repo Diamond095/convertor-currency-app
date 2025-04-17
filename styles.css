@@ -1,0 +1,68 @@
+/* Additional styling to complement Bootstrap */
+
+/* General Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Currency Converter Styles */
+.result-box {
+    background-color: rgba(33, 37, 41, 0.6);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.display-5, .display-4 {
+    word-break: break-word;
+}
+
+/* Table styles */
+.table-responsive {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Currency Select */
+.currency-flag {
+    width: 24px;
+    height: 18px;
+    margin-right: 8px;
+}
+
+/* History item hover effect */
+.history-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.history-item:hover {
+    background-color: var(--bs-dark);
+}
+
+/* Loading indicator animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#loading-indicator .spinner-border {
+    animation: pulse 1.5s infinite ease-in-out, spinner-border 0.75s linear infinite;
+}
+
+
+@media (max-width: 768px) {
+    .col-md-2.d-flex {
+        padding: 0.5rem 0;
+    }
+    
+    #swap-button {
+        transform: rotate(90deg);
+    }
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-exchange-alt me-2"></i>
+                Currency Converter
+            </a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0"><i class="fas fa-sync-alt me-2"></i>Convert Currency</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Converter Form -->
+                        <form id="converter-form">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="amount" class="form-label">Amount</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="amount" min="0.01" step="0.01" value="1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date" class="form-label">Date</label>
+                                    <input type="text" class="form-control" id="date" disabled>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-5">
+                                    <label for="from-currency" class="form-label">From</label>
+                                    <select class="form-select" id="from-currency" required>
+                                        <option value="" disabled selected>Select currency</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end justify-content-center mb-2">
+                                    <button type="button" id="swap-button" class="btn btn-outline-secondary">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="to-currency" class="form-label">To</label>
+                                    <select class="form-select" id="to-currency" required>
+                                        <option value="" disabled selected>Select currency</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-calculator me-2"></i>Convert
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="result-container" class="mt-4 d-none">
+                            <div class="card bg-dark">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-3">Conversion Result</h3>
+                                    <div class="result-box p-3 mb-3">
+                                        <span id="amount-display" class="display-5">1 USD</span>
+                                        <div class="my-2"><i class="fas fa-equals"></i></div>
+                                        <span id="result-display" class="display-4 text-success">0.82 EUR</span>
+                                    </div>
+                                    <p class="mb-0">Exchange Rate: <span id="rate-display">1 USD = 0.82 EUR</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="loading-indicator" class="text-center my-4 d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Fetching exchange rates...</p>
+                        </div>
+                        <div id="error-alert" class="alert alert-danger mt-3 d-none" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="error-message">Error fetching exchange rates. Please try again.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="fas fa-history me-2"></i>Recent Conversions</h3>
+                        <button id="clear-history" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-trash-alt me-1"></i>Clear
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul id="history-list" class="list-group list-group-flush">
+                            <li class="list-group-item text-center py-5" id="no-history">
+                                <i class="fas fa-info-circle me-2"></i>No recent conversions
+                            </li>
+                       </ul>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0"><i class="fas fa-table me-2"></i>Current Exchange Rates</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="rates-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Currency</th>
+                                        <th>Code</th>
+                                        <th>Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="no-rates">
+                                        <td colspan="3" class="text-center py-3">
+                                            <i class="fas fa-info-circle me-2"></i>Select a base currency to view rates
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container text-center">
+            <span class="text-muted">Currency Converter &copy; 2025 | Exchange rates provided by Frankfurter API</span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="converter.js"></script>
+</body>
+</html>
